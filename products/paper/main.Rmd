@@ -13,20 +13,17 @@ endnotes: false
 pagenumber: 1
 bibliography: ../project.bib
 biblio-style: ./resources/ajs.bst
-title: "The Title"
+title: "An Analysis of Themes in Online Pornography"
 author:
 - affiliation: University of Oregon, Sociology
-  name: Aaron Gullickson
-- affiliation: Some Research University
-  name: My co-author
+  name: Ben Dreon
 keywords: keywords
 thanks: Thanks to people and stuff
 abstract: This is a test abstract
 ---
 
 # Introduction
-
-# Background
+Pornography is becoming increasingly prevalent in society. Once deemed something fit only for degenerates, it has now proliferated via the internet for anyone to view. This growth in pornographic content suggests significantly more people are viewing pornography, and viewing it more often. Cultivation theory offers the viewpoint that as people consume more of a specific form of media, they tend to believe the norms and values of that media are reflective of the real world, and so tend to emulate those beliefs beyond the scope of that media. Consequently, the most prevalent forms of sexuality presented within porn have salience for society as a whole, since these formulations are going to be seen increasingly as what is expected of a sexual relationship. There is currently a gap in the literature on what themes in pornography are most prevalent, implying that further inquiry needs to be done in this area, which this present project aims to address. Using an exhaustive list of all videos posted to the website xHamster between 2007 and 2013, I will examine the prevalence of tags (i.e., video themes) and their popularity. Ultimately, I am interested in whether or not there is a relationship between certain tags having increased popularity over others, and if this popularity varies over time.
 
 # Data and Methods
 
