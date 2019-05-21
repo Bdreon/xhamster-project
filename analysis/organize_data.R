@@ -17,7 +17,12 @@ rankings <- read_csv2("analysis/input/rankings_xhamster.csv",
                                     "user_reaction"),
                       skip = 1)
 
-
+tag_matrix <- NULL
+for(tag in rankings$tag) {
+  cat(tag)
+  tag_matrix <- cbind(tag_matrix, grepl(tag, porn$channels))
+  cat("\n")
+}
 
 
 write_csv(porn, "analysis/output/porn_data.csv")
