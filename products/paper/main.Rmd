@@ -14,9 +14,9 @@ pagenumber: 1
 bibliography: ../project.bib
 biblio-style: ./resources/ajs.bst
 title: "An Analysis of Themes in Online Pornography"
-author: Ben Dreon
+author: 
 - affiliation: University of Oregon, Sociology
-  name: 
+  name: Ben Dreon
 keywords: Porn, Pornography, Human Sexuality
 thanks:
 abstract: This is a test abstract
@@ -29,21 +29,22 @@ There is currently a gap in the literature on what themes in pornography are mos
 # Data and Methods
 Data for this project comes from a publically available dataset on the website [sexualitics.org](www.sexualitics.org). The dataset comprises all videos uploaded to the website "XHamster" from the website's inception in 2007 through February of 2013. This is an exhaustive dataset with every video uploaded in the timeframe, and contains 786,122 videos total. The dataset contains variables listing the video title, date of upload, tag(s) associated with the video, number of times the video was viewed, number of votes the video has received, number of comments on the video, how long the video runs in seconds, and an anonymizied uploader identifier.  
 For the present analysis, the variable containing all of the tags associated with a video were split into separate boolean categories in order to obtain a complete list of how many videos were identified with each tag individually. Tags on XHamster are pre-arranged, meaning uploaders can choose which tags are associated with their video from a preset list of possible choices. The dataset used in this sample included 92 different tags. Many of these tags were organized around more generalized themes, e.g. what color someone's hair was, what kind of breasts an actress has, or what race the performers are. For the analysis, tags were condensed down to create families of similar tags. This was done to determine what overarching themes were present, as analysis over time of 92 separate entities proved too cumbersome, and most tags were similarly related to others thematically. 11 tag families were created in total, which incorporated all but 23 of the 92 tags in the dataset. Most of these tag families comprised between 5 and 10% of the total population.  
-##Tag Families
-###Ethnicity and Race
+## Tag Families
+### Ethnicity and Race
 XHamster includes tags for various ethnicities, which were combined into a family to analyze trends regarding nationality. The ethnicity tags available on XHamster include Arab, Brazilian, British, Chinese, Czech, Danish, French, German, Indian, Italian, Japanese, Korean, Russian, Swedish, Thai, and Turkish.  
 Several tags also existed that encompassed performer's racial category, including Asian, Black, Latin, and Interracial. In this case, Interracial was categorized with race due to its relationship to the race of the performers, but it could potentially have fallen under the sex act family as well.
 ###Body and Appearance
 Several families were created for tags that were related to specific body parts or the appearance of performers. Xhamster lists 3 tags related to hair color, "Blondes," "Redheads," and "Brunettes." These were combined to a hair family. Similarly, several tags existed to describe women's breasts: Big Boobs, Nipples, and Tits, which were likewise combined to a Breasts category. Finally, several tags related to older performers were combined into an age family; these included MILFS, Grannies, Matures, and the Old+Young tags. Of note is that two tags, Teens and Babysitters, referred to younger performers. These were separated out due to the trends potentially being different between individuals seeking younger performers versus older ones. Babysitters was then dropped due to extremely low occurence rates within the population (less than 1,000 total cases).
-###Sex Act
+### Sex Act
 The sex act category captures any tag related to a specific sex act, the idea being that there is a trend in individuals seeking out specific kinds of sex acts rather than a particular kind of performer. Sex act tags are comprised of: Anal, Blowjobs, Bukkake, Cream Pies, Cumshots, Double Penetration, Face Sitting, Facials, Fingering, Gangbang, Group Sex, Handjobs, Masturbation, and Threesomes.  
 Several other families of less direct sex acts were also created. A Fetish family was created to encapsulate niche bodily functions (Squirting, Gaping), less common body fixations (BBW, Foot Fetish), and clothing tags (Lingerie, Stockings, Latex). Likewise, tags related to BDSM were combined into their own family; while Xhamster has a specific tag for BDSM, I included Spanking, Femdom, and Cuckold into a broader BDSM tag, as these tags were also related to domination of one sexual partner by another, or to physical violence during sexual activity.
 Finally, Xhamster has numerous tags related to voyeur pornography, including a voyeur tag, but also tags for Public Nudity, Hidden Cams, Flashing, Upskirts, and Beach. Beach was included as it is ostensibly people performing sexual activities in an outdoor, public setting, despite this potentially including content on private beaches or away from public view; the theme of it being an open space is still related to the idea that someone else could be watching the act occur.
-###Non-Hetero Families
+### Non-Hetero Families
 Lastly, two tag families were created for non-heterosexual performers. the gay family was created from the Black Gays, Gays, and Men tags, notable here is that this includes only tags related to men, not women. A second tag family was also created for trans individuals, which is comprised of the Shemale and Ladyboy tags.
 
 # Results
-```
+```{r figures, echo=FALSE, message=FALSE, error=FALSE}
+library(ggplot2)
 load("../../analysis/output/analyticalData.RData")
 tags.super <- c("ethnicity",
                 "race",
@@ -56,8 +57,6 @@ tags.super <- c("ethnicity",
 
 trends <- NULL
 for(tag in tags.super) {
-  cat(tag)
-  cat("\n")
   temp <- data.frame(year=2007:2013,
                      tag=tag,
                      percent=100*prop.table(table(porn$upload_year, porn[,tag]),1)[,2])
@@ -89,8 +88,6 @@ tags.super <- c("hair",
 
 trends <- NULL
 for(tag in tags.super) {
-  cat(tag)
-  cat("\n")
   temp <- data.frame(year=2007:2013,
                      tag=tag,
                      percent=100*prop.table(table(porn$upload_year, porn[,tag]),1)[,2])
@@ -110,6 +107,7 @@ ggplot(trends, aes(x=year, y=percent, color=tag, group=tag))+
        colour="Theme")
 
 ```
+
 These two charts show the created tag families, as well as the 3 most popular individual tags that had similar prevalences to the tag families: Amateur, Teens, and Hardcore. The data was split onto two charts for readability purposes. By far the most popular tag family was sex act, with a peak of 40% of all videos being tagged with a sex act in 2009. Over time the popularity of this family waned, however it remains the most popular theme of all families even after this dip in later years.  
 Gay content has also shown steady, significant increase over the years, rising from less almost no content to approximately 22% of all uploaded materials by 2013. Race likewise has seen an increase over time, as has fetish content. Some of the more niche content shows steady growth over time however, as fetish and ethnic content attest.  
 What is perhaps more interesting, however, are the categories that have declined over time. most notably, Amateur content has experienced a stark decline, from nearly half of all content uploaded at the site's inception to approximately 29% by 2013; the Teens tag shows a nearly parallel decline as well. Hardcore content has also declined significantly over time, as has content focused on breasts.  

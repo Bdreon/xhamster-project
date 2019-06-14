@@ -11,12 +11,12 @@ source("useful_functions.R")
 
 library(readr)
 library(dplyr)
-library(poLCA)
+#library(poLCA)
 library(ggplot2)
 
 
-porn <- read_csv("analysis/input/xhamster.csv.tar.gz")
-rankings <- read_csv2("analysis/input/rankings_xhamster.csv", 
+porn <- read_csv("input/xhamster.csv.tar.gz")
+rankings <- read_csv2("input/rankings_xhamster.csv", 
                       col_names = c("tag", "occurence", "novelty", "popularity", 
                                     "user_reaction"),
                       skip = 1)
@@ -140,12 +140,6 @@ porn$animation <- ifelse(porn$Cartoons > 1, 2,
 #list of non-essential tags (n < 1000, don't fit above supercategory): 
 #Midget, Goth, Babysitters
 
-save(porn, file = "analysis/output/analyticalData.RData")
-
-
-
-
-
 #analysis
 
 
@@ -154,84 +148,85 @@ porn$days_avail <- as.numeric(as.Date("2013-02-28")-porn$upload_date)
 porn$popularity <- porn$nb_views/porn$days_avail
 porn$upload_year <- as.numeric(format(porn$upload_date, "%Y"))
 
+save(porn, file="output/analyticalData.RData")
 
-
-#Creating master list of tags for analysis
-tags.super <- c("ethnicity",
-                "race",
-#               "hair",
-                "sex.act",
-                "fetish",
-#               "bdsm.super",
-#               "age",
-                "voyeur.super",
-#               "trans",
-                "gay",
-                "breasts" 
-#                "Amateur", 
-#                "Teens", 
-#                "Hardcore"
-                )
-
-
-
-trends <- NULL
-for(tag in tags.super) {
-  cat(tag)
-  cat("\n")
-  temp <- data.frame(year=2007:2013,
-                     tag=tag,
-                     percent=100*prop.table(table(porn$upload_year, porn[,tag]),1)[,2])
-  
-  trends <- rbind(trends, temp)
-  
-}
-
-#Plotting group % by year
-ggplot(trends, aes(x=year, y=percent, color=tag, group=tag))+
-  geom_point()+
-  geom_smooth(se=FALSE)+
-  theme_bw()+
-  labs(x="Year",
-        y="Percent of total videos uploaded",
-        title="Major Themes in Pornography Published to XHamster: 2007-2013",
-       colour="Theme")
-
-
-#Second Chart
-#Creating master list of tags for analysis
-tags.super <- c("hair",
-                "bdsm.super",
-                "age",
-                "trans",
-                "Amateur", 
-                "Teens", 
-                "Hardcore"
-)
-
-
-
-trends <- NULL
-for(tag in tags.super) {
-  cat(tag)
-  cat("\n")
-  temp <- data.frame(year=2007:2013,
-                     tag=tag,
-                     percent=100*prop.table(table(porn$upload_year, porn[,tag]),1)[,2])
-  
-  trends <- rbind(trends, temp)
-  
-}
-
-#Plotting group % by year
-ggplot(trends, aes(x=year, y=percent, color=tag, group=tag))+
-  geom_point()+
-  geom_smooth(se=FALSE)+
-  theme_bw()+
-  labs(x="Year",
-       y="Percent of total videos uploaded",
-       title="Major Themes in Pornography Published to XHamster: 2007-2013",
-       colour="Theme")
+# 
+# #Creating master list of tags for analysis
+# tags.super <- c("ethnicity",
+#                 "race",
+# #               "hair",
+#                 "sex.act",
+#                 "fetish",
+# #               "bdsm.super",
+# #               "age",
+#                 "voyeur.super",
+# #               "trans",
+#                 "gay",
+#                 "breasts"
+# #                "Amateur",
+# #                "Teens",
+# #                "Hardcore"
+#                 )
+# 
+# 
+# 
+# trends <- NULL
+# for(tag in tags.super) {
+#   cat(tag)
+#   cat("\n")
+#   temp <- data.frame(year=2007:2013,
+#                      tag=tag,
+#                      percent=100*prop.table(table(porn$upload_year, porn[,tag]),1)[,2])
+# 
+#   trends <- rbind(trends, temp)
+# 
+# }
+# 
+# #Plotting group % by year
+# ggplot(trends, aes(x=year, y=percent, color=tag, group=tag))+
+#   geom_point()+
+#   geom_smooth(se=FALSE)+
+#   theme_bw()+
+#   labs(x="Year",
+#         y="Percent of total videos uploaded",
+#         title="Major Themes in Pornography Published to XHamster: 2007-2013",
+#        colour="Theme")
+# 
+# 
+# #Second Chart
+# #Creating master list of tags for analysis
+# tags.super <- c("hair",
+#                 "bdsm.super",
+#                 "age",
+#                 "trans",
+#                 "Amateur",
+#                 "Teens",
+#                 "Hardcore"
+# )
+# 
+# 
+# 
+# trends <- NULL
+# for(tag in tags.super) {
+#   cat(tag)
+#   cat("\n")
+#   temp <- data.frame(year=2007:2013,
+#                      tag=tag,
+#                      percent=100*prop.table(table(porn$upload_year, porn[,tag]),1)[,2])
+# 
+#   trends <- rbind(trends, temp)
+# 
+# }
+# 
+# #Plotting group % by year
+# ggplot(trends, aes(x=year, y=percent, color=tag, group=tag))+
+#   geom_point()+
+#   geom_smooth(se=FALSE)+
+#   theme_bw()+
+#   labs(x="Year",
+#        y="Percent of total videos uploaded",
+#        title="Major Themes in Pornography Published to XHamster: 2007-2013",
+#        colour="Theme")
 
 
 
@@ -249,20 +244,20 @@ ggplot(trends, aes(x=year, y=percent, color=tag, group=tag))+
 
 
 #Create subsample
-porn.subsample <- porn[sample(1:nrow(porn), 5000),]
-
-
-
-ggplot(porn, aes(x=upload_date, y=popularity, color=tag, group=tag))+
-  geom_point(alpha=0.1)+
-  geom_smooth(method="gam")+
-  scale_y_log10()
-
-ggplot(porn, aes(x=days_avail, y=nb_views))+
-  geom_point(alpha=0.1)+
-  geom_smooth(method="gam")+
-  theme_bw()
-
-#swap porn for porn.subsample and vice versa; porn will take much longer
-temp <- poLCA(as.formula(paste("cbind(",paste(tags.super,collapse=","),")~1",sep="")), 
-              porn.subsample, nclass=3)
+# porn.subsample <- porn[sample(1:nrow(porn), 5000),]
+#
+#
+#
+# ggplot(porn, aes(x=upload_date, y=popularity, color=tag, group=tag))+
+#   geom_point(alpha=0.1)+
+#   geom_smooth(method="gam")+
+#   scale_y_log10()
+#
+# ggplot(porn, aes(x=days_avail, y=nb_views))+
+#   geom_point(alpha=0.1)+
+#   geom_smooth(method="gam")+
+#   theme_bw()
+#
+# #swap porn for porn.subsample and vice versa; porn will take much longer
+# temp <- poLCA(as.formula(paste("cbind(",paste(tags.super,collapse=","),")~1",sep="")),
+#               porn.subsample, nclass=3)
