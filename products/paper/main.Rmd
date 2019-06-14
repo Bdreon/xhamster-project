@@ -14,21 +14,112 @@ pagenumber: 1
 bibliography: ../project.bib
 biblio-style: ./resources/ajs.bst
 title: "An Analysis of Themes in Online Pornography"
-author:
+author: Ben Dreon
 - affiliation: University of Oregon, Sociology
-  name: Ben Dreon
-keywords: keywords
-thanks: Thanks to people and stuff
+  name: 
+keywords: Porn, Pornography, Human Sexuality
+thanks:
 abstract: This is a test abstract
 ---
 
 # Introduction
-Pornography is becoming increasingly prevalent in society. Once deemed something fit only for degenerates, it has now proliferated via the internet for anyone to view. This growth in pornographic content suggests significantly more people are viewing pornography, and viewing it more often. Cultivation theory offers the viewpoint that as people consume more of a specific form of media, they tend to believe the norms and values of that media are reflective of the real world, and so tend to emulate those beliefs beyond the scope of that media. Consequently, the most prevalent forms of sexuality presented within porn have salience for society as a whole, since these formulations are going to be seen increasingly as what is expected of a sexual relationship. There is currently a gap in the literature on what themes in pornography are most prevalent, implying that further inquiry needs to be done in this area, which this present project aims to address. Using an exhaustive list of all videos posted to the website xHamster between 2007 and 2013, I will examine the prevalence of tags (i.e., video themes) and their popularity. Ultimately, I am interested in whether or not there is a relationship between certain tags having increased popularity over others, and if this popularity varies over time.
+Pornography is becoming increasingly prevalent in society. Once deemed something fit only for degenerates, it has now proliferated via the internet for anyone to view. This growth in pornographic content suggests significantly more people are viewing pornography, and viewing it more often. Cultivation theory offers the viewpoint that as people consume more of a specific form of media, they tend to believe the norms and values of that media are reflective of the real world, and so tend to emulate those beliefs beyond the scope of that media. Consequently, the most prevalent forms of sexuality presented within porn have salience for society as a whole, since these formulations are going to be seen increasingly as what is expected of a sexual relationship.  
+There is currently a gap in the literature on what themes in pornography are most prevalent, implying that further inquiry needs to be done in this area, which this present project aims to address. Using an exhaustive list of all videos posted to the website xHamster between 2007 and 2013, I will examine the prevalence of tags (i.e., video themes) and their popularity. Ultimately, I am interested in whether or not there is a relationship between certain tags having increased popularity over others, and if this popularity varies over time.
 
 # Data and Methods
+Data for this project comes from a publically available dataset on the website [sexualitics.org](www.sexualitics.org). The dataset comprises all videos uploaded to the website "XHamster" from the website's inception in 2007 through February of 2013. This is an exhaustive dataset with every video uploaded in the timeframe, and contains 786,122 videos total. The dataset contains variables listing the video title, date of upload, tag(s) associated with the video, number of times the video was viewed, number of votes the video has received, number of comments on the video, how long the video runs in seconds, and an anonymizied uploader identifier.  
+For the present analysis, the variable containing all of the tags associated with a video were split into separate boolean categories in order to obtain a complete list of how many videos were identified with each tag individually. Tags on XHamster are pre-arranged, meaning uploaders can choose which tags are associated with their video from a preset list of possible choices. The dataset used in this sample included 92 different tags. Many of these tags were organized around more generalized themes, e.g. what color someone's hair was, what kind of breasts an actress has, or what race the performers are. For the analysis, tags were condensed down to create families of similar tags. This was done to determine what overarching themes were present, as analysis over time of 92 separate entities proved too cumbersome, and most tags were similarly related to others thematically. 11 tag families were created in total, which incorporated all but 23 of the 92 tags in the dataset. Most of these tag families comprised between 5 and 10% of the total population.  
+##Tag Families
+###Ethnicity and Race
+XHamster includes tags for various ethnicities, which were combined into a family to analyze trends regarding nationality. The ethnicity tags available on XHamster include Arab, Brazilian, British, Chinese, Czech, Danish, French, German, Indian, Italian, Japanese, Korean, Russian, Swedish, Thai, and Turkish.  
+Several tags also existed that encompassed performer's racial category, including Asian, Black, Latin, and Interracial. In this case, Interracial was categorized with race due to its relationship to the race of the performers, but it could potentially have fallen under the sex act family as well.
+###Body and Appearance
+Several families were created for tags that were related to specific body parts or the appearance of performers. Xhamster lists 3 tags related to hair color, "Blondes," "Redheads," and "Brunettes." These were combined to a hair family. Similarly, several tags existed to describe women's breasts: Big Boobs, Nipples, and Tits, which were likewise combined to a Breasts category. Finally, several tags related to older performers were combined into an age family; these included MILFS, Grannies, Matures, and the Old+Young tags. Of note is that two tags, Teens and Babysitters, referred to younger performers. These were separated out due to the trends potentially being different between individuals seeking younger performers versus older ones. Babysitters was then dropped due to extremely low occurence rates within the population (less than 1,000 total cases).
+###Sex Act
+The sex act category captures any tag related to a specific sex act, the idea being that there is a trend in individuals seeking out specific kinds of sex acts rather than a particular kind of performer. Sex act tags are comprised of: Anal, Blowjobs, Bukkake, Cream Pies, Cumshots, Double Penetration, Face Sitting, Facials, Fingering, Gangbang, Group Sex, Handjobs, Masturbation, and Threesomes.  
+Several other families of less direct sex acts were also created. A Fetish family was created to encapsulate niche bodily functions (Squirting, Gaping), less common body fixations (BBW, Foot Fetish), and clothing tags (Lingerie, Stockings, Latex). Likewise, tags related to BDSM were combined into their own family; while Xhamster has a specific tag for BDSM, I included Spanking, Femdom, and Cuckold into a broader BDSM tag, as these tags were also related to domination of one sexual partner by another, or to physical violence during sexual activity.
+Finally, Xhamster has numerous tags related to voyeur pornography, including a voyeur tag, but also tags for Public Nudity, Hidden Cams, Flashing, Upskirts, and Beach. Beach was included as it is ostensibly people performing sexual activities in an outdoor, public setting, despite this potentially including content on private beaches or away from public view; the theme of it being an open space is still related to the idea that someone else could be watching the act occur.
+###Non-Hetero Families
+Lastly, two tag families were created for non-heterosexual performers. the gay family was created from the Black Gays, Gays, and Men tags, notable here is that this includes only tags related to men, not women. A second tag family was also created for trans individuals, which is comprised of the Shemale and Ladyboy tags.
 
 # Results
+```
+load("../../analysis/output/analyticalData.RData")
+tags.super <- c("ethnicity",
+                "race",
+                "sex.act",
+                "fetish",
+                "voyeur.super",
+                "gay",
+                "breasts" 
+                )
+
+trends <- NULL
+for(tag in tags.super) {
+  cat(tag)
+  cat("\n")
+  temp <- data.frame(year=2007:2013,
+                     tag=tag,
+                     percent=100*prop.table(table(porn$upload_year, porn[,tag]),1)[,2])
+  
+  trends <- rbind(trends, temp)
+}
+
+ggplot(trends, aes(x=year, y=percent, color=tag, group=tag))+
+  geom_point()+
+  geom_smooth(se=FALSE)+
+  theme_bw()+
+  labs(x="Year",
+        y="Percent of total videos uploaded",
+        title="Major Themes in Pornography Published to XHamster: 2007-2013",
+       colour="Theme")
+
+#Second Chart
+#Creating master list of tags for analysis
+tags.super <- c("hair",
+                "bdsm.super",
+                "age",
+                "trans",
+                "Amateur", 
+                "Teens", 
+                "Hardcore"
+)
+
+
+
+trends <- NULL
+for(tag in tags.super) {
+  cat(tag)
+  cat("\n")
+  temp <- data.frame(year=2007:2013,
+                     tag=tag,
+                     percent=100*prop.table(table(porn$upload_year, porn[,tag]),1)[,2])
+  
+  trends <- rbind(trends, temp)
+  
+}
+
+#Plotting group % by year
+ggplot(trends, aes(x=year, y=percent, color=tag, group=tag))+
+  geom_point()+
+  geom_smooth(se=FALSE)+
+  theme_bw()+
+  labs(x="Year",
+       y="Percent of total videos uploaded",
+       title="Major Themes in Pornography Published to XHamster: 2007-2013",
+       colour="Theme")
+
+```
+These two charts show the created tag families, as well as the 3 most popular individual tags that had similar prevalences to the tag families: Amateur, Teens, and Hardcore. The data was split onto two charts for readability purposes. By far the most popular tag family was sex act, with a peak of 40% of all videos being tagged with a sex act in 2009. Over time the popularity of this family waned, however it remains the most popular theme of all families even after this dip in later years.  
+Gay content has also shown steady, significant increase over the years, rising from less almost no content to approximately 22% of all uploaded materials by 2013. Race likewise has seen an increase over time, as has fetish content. Some of the more niche content shows steady growth over time however, as fetish and ethnic content attest.  
+What is perhaps more interesting, however, are the categories that have declined over time. most notably, Amateur content has experienced a stark decline, from nearly half of all content uploaded at the site's inception to approximately 29% by 2013; the Teens tag shows a nearly parallel decline as well. Hardcore content has also declined significantly over time, as has content focused on breasts.  
 
 # Conclusions
+Several major themes emerge from the data presented here. Perhaps most importantly is the decline of amateur content on the site. This would seem to suggest that Xhamster has shifted towards content produced by major studios rather than independent performers creating their own content. This could be indicative of a broader shift away from independent performers, or could related to the growing popularity of Xhamster: as their web traffic increases, more production studios are willing to publish their content on the site, thus reducing the footprint of amateur content creators. Another potential indicator of the decline in amateur content is the drop in voyeur content. The voyeur family contains several tags with the potential for amateurs to upload content from their daily lives, even without the consent of the persons being recorded. Hidden camera and upskirt content are easily captured by amateur auteurs, but are unlikely to be major trends in the corporatized world of large porn studios. Further research is needed to understand exactly what effects are taking place that are driving this shift away from amateur content, and whether it is a phenomena unique to Xhamster, or to the wider world of online pornography.  
+The meteoric rise in gay content is also of note in this data. Gay pornography is generally segregated from the rest of the porn world for rather obvious reasons, however its proliferation on a site that does not specifically cater to a gay market is clearly seen in the data. If the trends shown here continue, it won't be long before gay pornography holds an equal share of uploaded content to heterosexual content. Of further note was the dearth of lesbian content on Xhamster: only 22,000 videos were tagged as lesbian, with no other tags with a strong overlap besides Strap-On, which still would not raise it to the level of other tag families presented here --- approximately 70,000+ each. This gap in the prevalence of homosexual porn may speak to a lower libido among lesbians, but does not seem to line up with the idea that most lesbian porn is created for a straight male audience. A deeper examination is needed to understand why lesbian pornography is so rare on this platform.
+Niche categories show either sustained interest, or steady growth over time. BDSM tags never show a significant increase in popularity, but they never dip either. Trans tags operate in largely similar fashion, suggesting these less popular sexual inclinations remain present, but are not part of mainstream pornography. Fetish videos, on the other hand, do show significant growth over time. While not the most popular viewing material, these more varied sexual proclivities do seem to be entering mainstream pornography, albeit at a slow rate.
+##Limitations
+The largest hurdle in this project was the reliance on the tags already used on Xhamster. This necessarily restricted the analysis to predefined categories and themes that the administrators of Xhamster felt were most relevant. While 92 tags is a lot, a next step in this research is to develop tools for the examination of other themes. Today, Xhamster has seen an explosion in the number of tag categories, with hundreds if not thousands now available for users to sort videos on the site. If this dataset were to be expanded to the present day Xhamster environment, significantly more analysis could be done, both longitudinally and with more granularity of tag categories and themes.  
+Another potential issue with this project is the reliance on best-guess tag family combinations. I argue that the creation of these tag families was necessary in order for the analysis of the data to make any sense whatsoever, but an argument could be made that these are still arbitrary groupings of categories that rely upon my own intuition rather than a rigorous theoretical approach to the creation of tag groupings. 
 
 # References
