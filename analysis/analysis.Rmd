@@ -11,6 +11,9 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 source("useful_functions.R")
+library(poLCA)
+library(ggplot2)
+load("output/analyticalData.RData")
 ```
 
 # Introduction
@@ -18,8 +21,8 @@ source("useful_functions.R")
 
 Use this R Markdown to perform the main analysis for the project. I use this basically as a lab notebook. It contains the main analysis and a variety of sensitivity analysis. The code in this documents serves as a baseline for the eventual tables and figures that will go into the paper. At the same time it will serve as a record of all supplementary analyses performed. 
 
-
-
+#Charts
+```{r chart, echo=FALSE}
 porn$days_avail <- as.numeric(as.Date("2013-02-28")-porn$upload_date)
 porn$popularity <- porn$nb_views/porn$days_avail
 porn$upload_year <- as.numeric(format(porn$upload_date, "%Y"))
@@ -29,18 +32,11 @@ porn$upload_year <- as.numeric(format(porn$upload_date, "%Y"))
 #Creating master list of tags for analysis
 tags.super <- c("ethnicity",
                 "race",
-#               "hair",
                 "sex.act",
                 "fetish",
-#               "bdsm.super",
-#               "age",
                 "voyeur.super",
-#               "trans",
                 "gay",
                 "breasts" 
-#                "Amateur", 
-#                "Teens", 
-#                "Hardcore"
                 )
 
 
@@ -66,38 +62,43 @@ ggplot(trends, aes(x=year, y=percent, color=tag, group=tag))+
         y="Percent of total videos uploaded",
         title="Major Themes in Pornography Published to XHamster: 2007-2013",
        colour="Theme")
+```
+This is ultimately the chart I used to examine how prevalent certain tag families were. I initially ran it with all of the tag families, but it was information overload. I wound up splitting it across several charts for readability; 12+ lines was just an incomprehensible jumble. In the script I commented out specific tag families to find combinations that showed certain trends on the same graph, so I could more easily explain what trends I found most relevant to each other.
 
-#
+#Tag Family Tables
+```{r, family.tables}
+table(porn$breasts)
+table(porn$voyeur.super)
+table(porn$ethnicity)
 
+```
+Initially done to test whether each tag family was incorporating all tags correctly, I found these simple test tables actually showed that the tag family variables I had created could lend some explanatory power. Each of the tag families wound up encapsulating around 70,000 observations, which is around 9% of the total dataset. I made 11, which meant they came pretty close to filling the entire population, despite several categories being left out. 
 
+#Latent Class Analysis
+##Code
 
-
-
-
-
-
-
-
-#Deprecated Script
-
-
-
-
-#Create subsample
 porn.subsample <- porn[sample(1:nrow(porn), 5000),]
 
+temp <- poLCA(as.formula(paste("cbind(",paste(tags.super,collapse=","),")~1",sep="")), 
+              porn.subsample, nclass=3)
+
+##Description
+Latent Class analysis is a part of the proeject that is still in progress. For the current iteration of the paper, I have created what I identified as common-sense groupings of tags in the data, however there no statistical basis for this. Since tags are categorical variables, factor analysis is not possible. Latent class analysis is a technique that will allow me to find more common groupings of similar tags through analytical means rather than a priori assumptions. Unfortunately it is a time consuming process even for testing purposes, and I could not fit it into the current paper. Further, since it is analyzing 92 classes, it creates a massive amount of output, hence why I have left it as a code snippet rather than running the actual analysis (it would also take several hours to process!)
 
 
+
+#Early Graphs
+```{r, early.graphs, echo=FALSE}
 ggplot(porn, aes(x=upload_date, y=popularity, color=tag, group=tag))+
   geom_point(alpha=0.1)+
   geom_smooth(method="gam")+
   scale_y_log10()
+```
 
+```{r, graph2, echo=FALSE}
 ggplot(porn, aes(x=days_avail, y=nb_views))+
   geom_point(alpha=0.1)+
   geom_smooth(method="gam")+
   theme_bw()
-
-#swap porn for porn.subsample and vice versa; porn will take much longer
-temp <- poLCA(as.formula(paste("cbind(",paste(tags.super,collapse=","),")~1",sep="")), 
-              porn.subsample, nclass=3)
+```
+These graphs were some of my initial explorations into what the data looked like. I was trying to get a sense of what the distribution over time was for videos, as well as how time available on the site affected the number of views. These provided too much noise however, so were excluded from the final analysis.
