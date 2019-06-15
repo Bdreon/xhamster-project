@@ -71,7 +71,8 @@ ggplot(trends, aes(x=year, y=percent, color=tag, group=tag))+
   labs(x="Year",
         y="Percent of total videos uploaded",
         title="Major Themes in Pornography Published to XHamster: 2007-2013",
-       colour="Theme")
+       colour="Theme")  
+
 
 #Second Chart
 #Creating master list of tags for analysis
@@ -83,7 +84,6 @@ tags.super <- c("hair",
                 "Teens", 
                 "Hardcore"
 )
-
 
 
 trends <- NULL
@@ -107,6 +107,7 @@ ggplot(trends, aes(x=year, y=percent, color=tag, group=tag))+
        colour="Theme")
 
 ```
+
 
 These two charts show the created tag families, as well as the 3 most popular individual tags that had similar prevalences to the tag families: Amateur, Teens, and Hardcore. The data was split onto two charts for readability purposes. By far the most popular tag family was sex act, with a peak of 40% of all videos being tagged with a sex act in 2009. Over time the popularity of this family waned, however it remains the most popular theme of all families even after this dip in later years.  
 Gay content has also shown steady, significant increase over the years, rising from less almost no content to approximately 22% of all uploaded materials by 2013. Race likewise has seen an increase over time, as has fetish content. Some of the more niche content shows steady growth over time however, as fetish and ethnic content attest.  

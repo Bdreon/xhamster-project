@@ -15,8 +15,8 @@ library(dplyr)
 library(ggplot2)
 
 
-porn <- read_csv("input/xhamster.csv.tar.gz")
-rankings <- read_csv2("input/rankings_xhamster.csv", 
+porn <- read_csv("analysis/input/xhamster.csv.tar.gz")
+rankings <- read_csv2("analysis/input/rankings_xhamster.csv", 
                       col_names = c("tag", "occurence", "novelty", "popularity", 
                                     "user_reaction"),
                       skip = 1)
@@ -148,7 +148,7 @@ porn$days_avail <- as.numeric(as.Date("2013-02-28")-porn$upload_date)
 porn$popularity <- porn$nb_views/porn$days_avail
 porn$upload_year <- as.numeric(format(porn$upload_date, "%Y"))
 
-save(porn, file="output/analyticalData.RData")
+save(porn, file="analysis/output/analyticalData.RData")
 
 # 
 # #Creating master list of tags for analysis
